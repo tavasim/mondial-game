@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {
@@ -13,12 +14,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -30,7 +31,7 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
-  expires      DateTime
+  expires      DateTime @db.Timestamptz(6)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -38,7 +39,7 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime?
+  emailVerified DateTime? @db.Timestamptz(6)
   image         String?
   accounts      Account[]
   sessions      Session[]
@@ -49,7 +50,7 @@ model User {
 model VerificationToken {
   identifier String
   token      String   @unique
-  expires    DateTime
+  expires    DateTime @db.Timestamptz(6)
 
   @@unique([identifier, token])
 }
@@ -60,8 +61,8 @@ model Prediction {
   matchId   String
   homeGoals Int
   awayGoals Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -74,8 +75,8 @@ model MatchResult {
   homeGoals       Int
   awayGoals       Int
   updatedByUserId String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @db.Timestamptz(6)
 
   updatedByUser User? @relation("MatchResultUpdatedBy", fields: [updatedByUserId], references: [id], onDelete: SetNull)
 }

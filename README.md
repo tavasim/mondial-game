@@ -2,6 +2,19 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Configure Supabase Postgres connection strings for Prisma in `.env.local`:
+
+- `DATABASE_URL` (pooled / transaction mode)
+- `DIRECT_URL` (Supabase **session mode** on the pooler host — not necessarily `db.<ref>.supabase.co`)
+
+If `prisma migrate` fails with **P1001** to `db.<ref>.supabase.co:5432`, it’s commonly because that hostname is **IPv6-only** on your network. Use the **pooler** connection strings from Supabase instead (see `.env.example`).
+
+Then apply migrations:
+
+```bash
+npm run prisma:deploy
+```
+
 First, run the development server:
 
 ```bash

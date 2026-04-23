@@ -1,5 +1,6 @@
--- World Cup 2026 prediction pool — core schema for Supabase (PostgreSQL)
--- Run after: none. Then run 02_seed_world_cup_2026.sql
+-- NOTE (legacy): This file was an early Supabase-only schema (profiles/predictions/matches).
+-- The Next.js app now stores predictions via Prisma in Postgres tables like "Prediction" (see prisma/migrations).
+-- Do not apply this alongside Prisma migrations unless you intentionally want parallel schemas.
 
 -- ---------------------------------------------------------------------------
 -- Tables

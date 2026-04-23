@@ -7,7 +7,8 @@
     "build": "prisma generate && next build",
     "start": "next start -p 8070",
     "lint": "eslint",
-    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate": "dotenv -e .env.local -- prisma migrate dev",
+    "prisma:deploy": "dotenv -e .env.local -- prisma migrate deploy",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -20,10 +21,12 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "dotenv-cli": "^11.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "prisma": "5.22.0",
